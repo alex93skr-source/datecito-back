@@ -38,6 +38,23 @@ class StoreWebMessageRequest extends FormRequest
         ];
     }
 
+    /**
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'name' => 'nombre',
+            'email' => 'correo',
+            'topic' => 'tema',
+            'company' => 'empresa',
+            'city' => 'ciudad',
+            'message' => 'mensaje',
+            'attachment' => 'archivo adjunto',
+            'accepted' => 'aviso de privacidad',
+        ];
+    }
+
     protected function prepareForValidation(): void
     {
         $this->merge(['email' => mb_strtolower(trim((string) $this->input('email')))]);
