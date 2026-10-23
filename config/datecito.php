@@ -34,6 +34,21 @@ return [
     ],
 
     /*
+    | Sitio público: origen permitido para sus formularios y a quién se avisa por correo
+    | según el tipo de mensaje (null = sólo se guarda en el CRM).
+    */
+    'web' => [
+        'url' => env('DATECITO_WEB_URL', 'http://localhost:5173'),
+        'notify' => [
+            'contact' => env('DATECITO_NOTIFY_SUPPORT', 'ayuda@datecito.com'),
+            'partners' => env('DATECITO_NOTIFY_PARTNERS', 'alianzas@datecito.com'),
+            'arco' => env('DATECITO_NOTIFY_PRIVACY', 'privacidad@datecito.com'),
+            'campus' => null,
+            'newsletter' => null,
+        ],
+    ],
+
+    /*
     | Zona horaria para los límites diarios (se reinician a medianoche) y para
     | escribir fechas de datecitos.
     */

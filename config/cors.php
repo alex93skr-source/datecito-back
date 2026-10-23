@@ -23,6 +23,7 @@ return [
     'allowed_origins' => array_values(array_unique(array_filter([
         ...explode(',', (string) env('CORS_ALLOWED_ORIGINS', '')),
         (string) env('DATECITO_CRM_URL', 'http://localhost:5175'),
+        (string) env('DATECITO_WEB_URL', 'http://localhost:5173'),
     ]))),
 
     'allowed_origins_patterns' => [],

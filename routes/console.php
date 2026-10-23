@@ -25,3 +25,6 @@ Schedule::call(fn () => EmailCode::query()->where('expires_at', '<', now()->subD
     ->daily();
 
 Schedule::command('sanctum:prune-expired --hours=24')->daily();
+
+// Política de datos sensibles: las selfies revisadas y las identificaciones ARCO atendidas se borran a los 30 días.
+Schedule::command('datecito:prune-selfies')->dailyAt('04:00');

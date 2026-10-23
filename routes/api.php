@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\V1\Admin\UserActionController;
 use App\Http\Controllers\Api\V1\Admin\UserController;
 use App\Http\Controllers\Api\V1\Admin\UserNoteController;
 use App\Http\Controllers\Api\V1\Admin\VerificationController as AdminVerificationController;
+use App\Http\Controllers\Api\V1\Admin\WebMessageController as AdminWebMessageController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CatalogController;
 use App\Http\Controllers\Api\V1\ConnectionController;
@@ -34,6 +35,7 @@ use App\Http\Controllers\Api\V1\SafeSessionController;
 use App\Http\Controllers\Api\V1\SafetyController;
 use App\Http\Controllers\Api\V1\SwipeController;
 use App\Http\Controllers\Api\V1\VerificationController;
+use App\Http\Controllers\Api\V1\WebMessageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,6 +51,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.v1.')->group(function (): void {
     Route::get('catalog', CatalogController::class)->name('catalog');
+    // Formularios del sitio web (sin sesión, con límite por IP y trampa anti-bots).
+    Route::post('web/messages', [WebMessageController::class, 'store'])->middleware('throttle:web')->name('web.messages.store');
 
     Route::prefix('auth')->name('auth.')->middleware('throttle:auth')->group(function (): void {
         Route::post('register', [AuthController::class, 'register'])->name('register');
@@ -175,6 +179,11 @@ Route::prefix('v1')->name('api.v1.')->group(function (): void {
                 Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
                 Route::get('reports/{report}', [ReportController::class, 'show'])->name('reports.show');
                 Route::patch('reports/{report}', [ReportController::class, 'update'])->name('reports.update');
+
+                // Mensajes del sitio web
+                Route::get('web-messages', [AdminWebMessageController::class, 'index'])->name('web-messages.index');
+                Route::patch('web-messages/{message}', [AdminWebMessageController::class, 'update'])->name('web-messages.update');
+                Route::get('web-messages/{message}/attachment', [AdminWebMessageController::class, 'attachment'])->name('web-messages.attachment');
                 Route::get('verifications', [AdminVerificationController::class, 'index'])->name('verifications.index');
                 Route::post('verifications/{verification}', [AdminVerificationController::class, 'review'])->name('verifications.review');
 
