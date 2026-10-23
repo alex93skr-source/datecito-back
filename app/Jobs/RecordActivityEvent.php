@@ -23,9 +23,14 @@ class RecordActivityEvent implements ShouldQueue
 
     public function handle(): void
     {
-        ActivityEvent::query()->create($this->attributes);
-
         $userId = $this->attributes['user_id'] ?? null;
+
+        // La persona pudo borrar su cuenta mientras el evento esperaba en la cola.
+        if ($userId !== null && ! User::query()->whereKey($userId)->exists()) {
+            return;
+        }
+
+        ActivityEvent::query()->create($this->attributes);
 
         if ($userId === null || ($this->attributes['category'] ?? null) === ActivityEvent::CATEGORY_SYSTEM) {
             return;
