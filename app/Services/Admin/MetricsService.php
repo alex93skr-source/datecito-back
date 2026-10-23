@@ -15,6 +15,7 @@ use App\Models\SafeSession;
 use App\Models\Subscription;
 use App\Models\User;
 use App\Models\VerificationRequest;
+use App\Models\WebMessage;
 use App\Support\Period;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Query\Builder;
@@ -77,6 +78,7 @@ class MetricsService
                     'connections_active' => DB::table('connections')->whereNull('ended_at')->count(),
                     'reports_open' => Report::query()->whereIn('status', [ReportStatus::Open, ReportStatus::Reviewing])->count(),
                     'verifications_pending' => VerificationRequest::query()->where('status', VerificationStatus::Pending)->count(),
+                    'web_messages_new' => WebMessage::query()->where('status', 'new')->count(),
                     'here_live' => HereSession::query()->live()->count(),
                     'safe_sessions_active' => SafeSession::query()->whereIn('status', [SafeSessionStatus::Active, SafeSessionStatus::Help, SafeSessionStatus::Overdue])->count(),
                     'safe_sessions_help' => SafeSession::query()->whereIn('status', [SafeSessionStatus::Help, SafeSessionStatus::Overdue])->count(),
@@ -349,6 +351,7 @@ class MetricsService
             ],
             'reports_open' => Report::query()->whereIn('status', [ReportStatus::Open, ReportStatus::Reviewing])->count(),
             'verifications_pending' => VerificationRequest::query()->where('status', VerificationStatus::Pending)->count(),
+            'web_messages_new' => WebMessage::query()->where('status', 'new')->count(),
             'today' => [
                 'signups' => $this->countBetween('users', 'created_at', $today),
                 'swipes' => $this->countBetween('swipes', 'created_at', $today),

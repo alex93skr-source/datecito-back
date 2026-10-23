@@ -59,7 +59,7 @@ class DiscoveryAndMatchingTest extends TestCase
 
     public function test_intent_filters_while_interests_only_reorder(): void
     {
-        $this->signIn(User::factory()->withPhoto()->create());
+        $this->signIn(User::factory()->withPhoto()->create(['interests' => []]));
         $hiker = User::factory()->withPhoto()->create(['interests' => ['Senderismo'], 'intent' => 'Algo serio, con calma']);
         $other = User::factory()->withPhoto()->create(['interests' => ['Cine'], 'intent' => 'Conocer sin presión']);
         $filters = ['meet' => 'Todas las personas', 'minAge' => 18, 'maxAge' => 60, 'km' => 25, 'intents' => [], 'relationships' => [], 'genres' => [], 'lifestyle' => [], 'languages' => [], 'verifiedOnly' => false];
