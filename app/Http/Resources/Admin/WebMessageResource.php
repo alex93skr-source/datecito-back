@@ -26,7 +26,8 @@ class WebMessageResource extends JsonResource
             'topic' => $this->topic,
             'company' => $this->company,
             'city' => $this->city,
-            'message' => $this->message,
+            // mb_scrub evita que un mensaje con bytes inválidos rompa toda la lista al serializarla.
+            'message' => $this->message !== null ? mb_scrub($this->message) : null,
             'has_attachment' => $this->attachment_key !== null,
             'status' => $this->status,
             'handled_by' => $this->whenLoaded('handler', fn () => $this->handler ? UserSummaryResource::mini($this->handler) : null),
