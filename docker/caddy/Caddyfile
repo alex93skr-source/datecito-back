@@ -20,6 +20,9 @@
 	encode zstd gzip
 	@assets path /assets/*
 	header @assets Cache-Control "public, max-age=31536000, immutable"
+	# El HTML siempre se revalida: tras un despliegue nadie se queda con una página vieja que apunte a archivos borrados.
+	@html not path /assets/*
+	header @html Cache-Control "no-cache"
 	# La raíz manda a la versión en español (x-default); cada página tiene su HTML prerenderizado.
 	@root path /
 	redir @root /es/ 302
