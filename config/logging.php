@@ -126,6 +126,15 @@ return [
             'replace_placeholders' => true,
         ],
 
+        // Correo con MAIL_MAILER=log: se escribe aquí sin importar LOG_LEVEL (los códigos de verificación se leen de este archivo mientras no haya SMTP).
+        'mail' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/mail.log'),
+            'level' => 'debug',
+            'days' => 7,
+            'replace_placeholders' => true,
+        ],
+
         'null' => [
             'driver' => 'monolog',
             'handler' => NullHandler::class,
