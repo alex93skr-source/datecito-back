@@ -40,8 +40,8 @@ echo "Optimizando y reiniciando colas"
 "${ART[@]}" optimize --no-interaction
 "${ART[@]}" queue:restart --no-interaction
 "${COMPOSE[@]}" restart queue scheduler >/dev/null
-# Caddy relee su configuración (el archivo se actualiza en sitio; el contenedor no se recrea).
-"${COMPOSE[@]}" exec -T caddy caddy reload --config /etc/caddy/Caddyfile 2>/dev/null || true
+# El Caddyfile está montado por inodo y el tar lo reemplaza por otro archivo: hay que recrear el contenedor para que lo vea.
+"${COMPOSE[@]}" up -d --force-recreate caddy >/dev/null 2>&1
 
 # Respaldo diario de la base de datos a las 3:30 (hora del servidor), 14 días de historial.
 install -m 755 docker/backup.sh /usr/local/bin/datecito-backup
